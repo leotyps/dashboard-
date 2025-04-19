@@ -26,7 +26,7 @@ export function CardConnectAccount() {
       if (!team) return
       try {
         const res = await fetch(
-          `https://backend.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`
+          `https://api.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`
         )
         const data = await res.json()
         if (data?.user?.team_id) {
