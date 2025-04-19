@@ -22,7 +22,7 @@ export function TotalRevenueCard() {
 
     const fetchSaldo = async () => {
       try {
-        const res = await fetch(`https://backend.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`)
+        const res = await fetch(`https://api.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`)
         const data = await res.json()
         setSaldo(Number(data?.user?.saldo ?? 0))
       } catch (err) {
