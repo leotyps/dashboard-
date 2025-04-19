@@ -8,8 +8,8 @@ import { Provider } from "./provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Stack Template",
-  description: "A Multi-tenant Next.js Starter Template",
+  title: "JKT48Connect - ZENOVA",
+  description: "a restapi which provides jkt48 features and also other features",
 };
 
 export default function RootLayout({
