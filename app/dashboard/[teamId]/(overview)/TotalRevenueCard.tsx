@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-export function CardConnectAccount() {
+export function TotalRevenueCard() {
   const params = useParams<{ teamId: string }>()
   const user = useUser({ or: 'redirect' })
   const team = user.useTeam(params.teamId)
