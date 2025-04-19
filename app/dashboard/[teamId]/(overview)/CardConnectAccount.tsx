@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useParams, useRouter } from 'next/navigation'
-import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
+import { useUser } from "@stackframe/stack";
 import { useState } from 'react'
 
 const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN as string
@@ -17,7 +17,7 @@ const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN as string
 export function CardConnectAccount() {
   const params = useParams<{ teamId: string }>()
   const user = useUser({ or: 'redirect' })
-  const team = user.useTeam(params.teamId) // `team` bisa null di sini
+  const team = user.useTeam(params.teamId)
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
@@ -48,13 +48,17 @@ export function CardConnectAccount() {
       const saveRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/save-data?team_id=${team.id}&apikey=${key}`,
         {
-          method: 'GET',
+          method: 'POST',
         }
       )
 
-      const saveData = await saveRes.json()
-      if (!saveRes.ok || saveData.message !== "User data saved successfully") {
+      if (!saveRes.ok) {
         throw new Error('Gagal menyimpan data pengguna')
+      }
+
+      const saveData = await saveRes.json()
+      if (saveData.message !== "User data saved successfully") {
+        throw new Error('Data pengguna tidak berhasil disimpan')
       }
 
       // Kirim data ke API edit-github-apikey
@@ -62,9 +66,13 @@ export function CardConnectAccount() {
         `https://backend.jkt48connect.my.id/api/auth/edit-github-apikey?githubToken=${githubToken}&apiKey=${key}`
       )
 
-      const editData = await editRes.json()
-      if (!editRes.ok || editData.message !== "API key updated successfully") {
+      if (!editRes.ok) {
         throw new Error('Gagal memperbarui API Key GitHub')
+      }
+
+      const editData = await editRes.json()
+      if (editData.message !== "API key updated successfully") {
+        throw new Error('Gagal memperbarui API Key')
       }
 
       setApikey(editData.apiKey) // Menyimpan API Key
@@ -72,7 +80,7 @@ export function CardConnectAccount() {
       router.refresh()
     } catch (err: any) {
       setError(true)
-      setMessage(err.message || 'Terjadi kesalahan.')
+      setMessage(err.message || 'Terjadi kesalahan dalam proses penghubungan')
     } finally {
       setLoading(false)
     }
