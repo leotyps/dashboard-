@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata } from "next";
 
 import { RecentSales } from "@/app/dashboard/[teamId]/(overview)/recent-sales";
@@ -20,7 +22,6 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
   const [showApiKey, setShowApiKey] = useState(false);
-
   const toggleApiKey = () => setShowApiKey(!showApiKey);
   const apiKey = "JKT48CONNECT";
   const maskedKey = "\u2022".repeat(apiKey.length);
