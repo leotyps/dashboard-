@@ -44,23 +44,31 @@ export function CardConnectAccount() {
     setError(false)
 
     try {
+      // Kirim data ke API save-data
       const saveRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/save-data?team_id=${team.id}&apikey=${key}`,
         {
-          method: 'POST',
+          method: 'GET',
         }
       )
 
-      if (!saveRes.ok) throw new Error('Gagal menyimpan ke database')
+      const saveData = await saveRes.json()
+      if (!saveRes.ok || saveData.message !== "User data saved successfully") {
+        throw new Error('Gagal menyimpan data pengguna')
+      }
 
+      // Kirim data ke API edit-github-apikey
       const editRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/edit-github-apikey?githubToken=${githubToken}&apiKey=${key}`
       )
 
-      if (!editRes.ok) throw new Error('Gagal update GitHub API Key')
+      const editData = await editRes.json()
+      if (!editRes.ok || editData.message !== "API key updated successfully") {
+        throw new Error('Gagal memperbarui API Key GitHub')
+      }
 
-      setApikey(key)
-      setMessage('Akun berhasil dihubungkan dan API Key telah dibuat.')
+      setApikey(editData.apiKey) // Menyimpan API Key
+      setMessage(`Akun berhasil dihubungkan dan API Key dibuat: ${editData.apiKey}`)
       router.refresh()
     } catch (err: any) {
       setError(true)
