@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Graph } from "./graph";
-import { Coins } from "lucide-react";
+import { Coins, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -18,6 +19,12 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
+  const [showApiKey, setShowApiKey] = useState(false);
+
+  const toggleApiKey = () => setShowApiKey(!showApiKey);
+  const apiKey = "JKT48CONNECT";
+  const maskedKey = "\u2022".repeat(apiKey.length);
+
   return (
     <>
       <div className="flex-col">
@@ -58,8 +65,13 @@ export default function DashboardPage() {
                 <CardDescription>Gunakan API Key ini untuk akses layanan</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-lg font-mono break-all bg-muted p-3 rounded-md">
-                  JKT48CONNECT
+                <div className="flex items-center bg-muted p-3 rounded-md">
+                  <div className="text-lg font-mono break-all flex-1">
+                    {showApiKey ? apiKey : maskedKey}
+                  </div>
+                  <button onClick={toggleApiKey} className="ml-2 text-muted-foreground">
+                    {showApiKey ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
                 </div>
               </CardContent>
             </Card>
