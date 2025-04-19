@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Graph } from "./graph";
+import { ApikeyCard } from "./ApikeyCard";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -48,7 +49,8 @@ export default function DashboardPage() {
                   +20.1% from last month
                 </p>
               </CardContent>
-            </Card>
+            </Card>>
+            <ApikeyCard />
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
