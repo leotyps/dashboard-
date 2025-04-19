@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button'
 import { useParams, useRouter } from 'next/navigation'
 import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
 import { useState } from 'react'
-import { toast } from 'sonner'
 
 const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN as string
 
@@ -23,6 +22,8 @@ export function CardConnectAccount() {
 
   const [loading, setLoading] = useState(false)
   const [apikey, setApikey] = useState('')
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState(false)
 
   const generateKey = () => {
     const prefix = Math.random() < 0.5 ? 'CL' : 'VZ'
@@ -33,9 +34,10 @@ export function CardConnectAccount() {
   const handleConnect = async () => {
     const key = generateKey()
     setLoading(true)
+    setMessage('')
+    setError(false)
 
     try {
-      // Kirim ke endpoint save-data + apikey
       const saveRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/save-data?team_id=${team.id}&apikey=${key}`,
         {
@@ -45,7 +47,6 @@ export function CardConnectAccount() {
 
       if (!saveRes.ok) throw new Error('Gagal menyimpan ke database')
 
-      // Kirim ke edit-github-apikey
       const editRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/edit-github-apikey?githubToken=${githubToken}&apiKey=${key}`
       )
@@ -53,10 +54,11 @@ export function CardConnectAccount() {
       if (!editRes.ok) throw new Error('Gagal update GitHub API Key')
 
       setApikey(key)
-      toast.success('Akun berhasil dihubungkan dan API Key dibuat')
+      setMessage('Akun berhasil dihubungkan dan API Key telah dibuat.')
       router.refresh()
     } catch (err: any) {
-      toast.error(err.message || 'Terjadi kesalahan')
+      setError(true)
+      setMessage(err.message || 'Terjadi kesalahan.')
     } finally {
       setLoading(false)
     }
@@ -79,6 +81,11 @@ export function CardConnectAccount() {
         <Button onClick={handleConnect} disabled={loading}>
           {loading ? 'Connecting...' : 'Connect & Generate API Key'}
         </Button>
+        {message && (
+          <p className={`text-sm ${error ? 'text-red-500' : 'text-green-600'}`}>
+            {message}
+          </p>
+        )}
       </CardContent>
     </Card>
   )
