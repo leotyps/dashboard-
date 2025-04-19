@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useParams } from 'next/navigation'
 import { useUser } from "@stackframe/stack"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export function CardConnectAccount() {
   const params = useParams<{ teamId: string }>()
@@ -18,6 +18,27 @@ export function CardConnectAccount() {
   const team = user.useTeam(params.teamId)
 
   const [loading, setLoading] = useState(false)
+  const [isAccountConnected, setIsAccountConnected] = useState(false)
+
+  useEffect(() => {
+    // Cek status koneksi akun di API get-user
+    const checkAccountStatus = async () => {
+      if (!team) return
+      try {
+        const res = await fetch(
+          `https://backend.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`
+        )
+        const data = await res.json()
+        if (data?.user?.team_id) {
+          setIsAccountConnected(true) // Akun sudah terhubung
+        }
+      } catch (error) {
+        console.error('Error checking account status:', error)
+      }
+    }
+
+    checkAccountStatus()
+  }, [team])
 
   const generateKey = () => {
     const prefix = Math.random() < 0.5 ? 'CL' : 'VZ'
@@ -42,9 +63,13 @@ export function CardConnectAccount() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col space-y-3">
-        <Button onClick={handleRedirectToWhatsApp} disabled={loading}>
-          {loading ? 'Redirecting...' : 'Connect & Generate API Key'}
-        </Button>
+        {isAccountConnected ? (
+          <p>Akun sudah terhubung</p>
+        ) : (
+          <Button onClick={handleRedirectToWhatsApp} disabled={loading}>
+            {loading ? 'Redirecting...' : 'Connect & Generate API Key'}
+          </Button>
+        )}
       </CardContent>
     </Card>
   )
