@@ -43,8 +43,11 @@ export function CardConnectAccount() {
     setMessage('')
     setError(false)
 
+    console.log('Generating API Key:', key)
+
     try {
       // Kirim data ke API save-data
+      console.log(`Menyimpan data pengguna ke API save-data dengan team_id: ${team.id} dan apikey: ${key}`)
       const saveRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/save-data?team_id=${team.id}&apikey=${key}`,
         {
@@ -57,11 +60,13 @@ export function CardConnectAccount() {
       }
 
       const saveData = await saveRes.json()
+      console.log('Response save-data:', saveData)
       if (saveData.message !== "User data saved successfully") {
         throw new Error('Data pengguna tidak berhasil disimpan')
       }
 
       // Kirim data ke API edit-github-apikey
+      console.log(`Memperbarui API Key dengan githubToken: ${githubToken} dan apikey: ${key}`)
       const editRes = await fetch(
         `https://backend.jkt48connect.my.id/api/auth/edit-github-apikey?githubToken=${githubToken}&apiKey=${key}`
       )
@@ -71,6 +76,7 @@ export function CardConnectAccount() {
       }
 
       const editData = await editRes.json()
+      console.log('Response edit-github-apikey:', editData)
       if (editData.message !== "API key updated successfully") {
         throw new Error('Gagal memperbarui API Key')
       }
@@ -81,8 +87,10 @@ export function CardConnectAccount() {
     } catch (err: any) {
       setError(true)
       setMessage(err.message || 'Terjadi kesalahan dalam proses penghubungan')
+      console.error('Error:', err)
     } finally {
       setLoading(false)
+      console.log('Proses selesai.')
     }
   }
 
