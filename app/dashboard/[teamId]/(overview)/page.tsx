@@ -12,6 +12,7 @@ import { Graph } from "./graph";
 import { ApiKeyCard } from "./ApikeyCard";
 import { TotalRevenueCard } from "./TotalRevenueCard";
 import { ActiveNowCard } from "./ActiveNowCard";
+import { CardConnectAccount } from "./CardConnectAccount";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -27,7 +28,8 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold tracking-tight">Overview</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-           <TotalRevenueCard />
+           <CardConnectAccount />
+            <TotalRevenueCard />
              <ApiKeyCard />
            <ActiveNowCard />
           </div>
