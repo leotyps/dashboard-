@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useParams, useRouter } from 'next/navigation'
-import { useUser } from '@clerk/nextjs'
+import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
 import { useState } from 'react'
 import { toast } from 'sonner'
 
