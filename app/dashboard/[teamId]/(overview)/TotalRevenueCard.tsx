@@ -1,17 +1,43 @@
-"use client";
+'use client'
 
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { useUser } from '@stackframe/stack'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 
-export function TotalRevenueCard() {
+export function CardConnectAccount() {
+  const params = useParams<{ teamId: string }>()
+  const user = useUser({ or: 'redirect' })
+  const team = user.useTeam(params.teamId)
+
+  const [saldo, setSaldo] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!team?.id) return
+
+    const fetchSaldo = async () => {
+      try {
+        const res = await fetch(`https://backend.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`)
+        const data = await res.json()
+        setSaldo(Number(data?.user?.saldo ?? 0))
+      } catch (err) {
+        console.error('Gagal ambil saldo:', err)
+        setSaldo(0)
+      }
+    }
+
+    fetchSaldo()
+  }, [team?.id])
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+        <CardTitle className="text-sm font-medium">Saldo Kamu</CardTitle>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -26,9 +52,11 @@ export function TotalRevenueCard() {
         </svg>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">$45,231.89</div>
-        <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+        <div className="text-2xl font-bold">
+          {saldo === null ? 'Loading...' : `Rp ${saldo.toLocaleString('id-ID')}`}
+        </div>
+        <p className="text-xs text-muted-foreground">Saldo terhubung dari akun kamu</p>
       </CardContent>
     </Card>
-  );
+  )
 }
