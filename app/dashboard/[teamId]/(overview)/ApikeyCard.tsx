@@ -27,7 +27,7 @@ export function ApiKeyCard() {
 
     const fetchApiKey = async () => {
       try {
-        const res = await fetch(`https://backend.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`)
+        const res = await fetch(`https://api.jkt48connect.my.id/api/auth/get-user?team_id=${team.id}`)
         const data = await res.json()
         setApiKey(data?.user?.apikey ?? null)
       } catch (err) {
