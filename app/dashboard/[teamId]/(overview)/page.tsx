@@ -16,7 +16,7 @@ import { CardConnectAccount } from "./CardConnectAccount";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Example dashboard app built using the components.",
+  description: "",
 };
 
 export default function DashboardPage() {
@@ -32,27 +32,6 @@ export default function DashboardPage() {
             <TotalRevenueCard />
              <ApiKeyCard />
            <ActiveNowCard />
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4">
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-2">
-                <Graph />
-              </CardContent>
-            </Card>
-            <Card className="col-span-3">
-              <CardHeader>
-                <CardTitle>Recent Sales</CardTitle>
-                <CardDescription>
-                  You made 265 sales this month.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RecentSales />
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
