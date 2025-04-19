@@ -11,6 +11,7 @@ import {
 import { Graph } from "./graph";
 import { ApiKeyCard } from "./ApikeyCard";
 import { TotalRevenueCard } from "./TotalRevenueCard";
+import { ActiveNowCard } from "./ActiveNowCard";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -28,6 +29,7 @@ export default function DashboardPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
            <TotalRevenueCard />
              <ApiKeyCard />
+           <ActiveNowCard />
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4">
