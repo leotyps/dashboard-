@@ -17,7 +17,7 @@ const githubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN as string
 export function CardConnectAccount() {
   const params = useParams<{ teamId: string }>()
   const user = useUser({ or: 'redirect' })
-  const team = user.useTeam(params.teamId)
+  const team = user.useTeam(params.teamId) // `team` bisa null di sini
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
@@ -32,6 +32,12 @@ export function CardConnectAccount() {
   }
 
   const handleConnect = async () => {
+    if (!team) {
+      setMessage('Tim tidak ditemukan')
+      setError(true)
+      return
+    }
+
     const key = generateKey()
     setLoading(true)
     setMessage('')
