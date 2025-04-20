@@ -51,7 +51,7 @@ export default async function IndexPage() {
             ],
             buttonText: "Beli Sekarang",
             isPopular: true,
-            buttonHref: stackServerApp.urls.signUp,
+            buttonHref: "https://payment.jkt48connect.my.id",
           },
           {
             title: "Custom Plan",
