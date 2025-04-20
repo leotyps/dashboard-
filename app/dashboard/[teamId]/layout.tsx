@@ -1,6 +1,6 @@
 'use client';
 
-import SidebarLayout, { SidebarItem } from "@/components/sidebar-layout";
+import SidebarLayout from "@/components/sidebar-layout";
 import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
 import {
   BadgePercent,
@@ -20,24 +20,20 @@ import {
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
-// Custom Sidebar Item for Docs link
-const DocsSidebarItem = () => {
-  return (
-    <SidebarItem type="item">
-      <a
-        href="https://docs.jkt48connect.my.id"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-white"
-      >
-        <Zap className="h-4 w-4" />
-        <span>Docs</span>
-      </a>
-    </SidebarItem>
-  );
-};
+// Custom Docs Sidebar link
+const DocsLink = () => (
+  <a
+    href="https://docs.jkt48connect.my.id"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-white"
+  >
+    <Zap className="h-4 w-4" />
+    <span>Docs</span>
+  </a>
+);
 
-const navigationItems: SidebarItem[] = [
+const navigationItems = [
   {
     name: "Overview",
     href: "/",
@@ -133,8 +129,10 @@ export default function Layout(props: { children: React.ReactNode }) {
       ]}
     >
       {props.children}
-      {/* Add custom Docs Sidebar item here */}
-      <DocsSidebarItem />
+      {/* Docs link directly outside the sidebar items */}
+      <div className="px-4 py-2">
+        <DocsLink />
+      </div>
     </SidebarLayout>
   );
 }
