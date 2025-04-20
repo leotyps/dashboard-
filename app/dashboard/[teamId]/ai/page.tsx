@@ -18,7 +18,7 @@ const jkt48Features = [
   {
   title: "Microsoft Copilot",
   description: "Gunakan kecerdasan buatan Microsoft Copilot untuk menjawab pertanyaan atau membantu dalam analisis data JKT48. Cocok untuk auto-reply, tanya jawab seputar member, jadwal, dan lainnya.",
-  endpoint: "https://api.jkt48connect.my.id/api/ai/microsoft&api_key=XXX",
+  endpoint: "https://api.jkt48connect.my.id/api/ai/microsoft?api_key=XXX",
   premium: false,
 },
 ];
