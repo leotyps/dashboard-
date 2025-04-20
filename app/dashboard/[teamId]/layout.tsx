@@ -20,6 +20,23 @@ import {
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
+// Custom Sidebar Item for Docs link
+const DocsSidebarItem = () => {
+  return (
+    <SidebarItem type="item">
+      <a
+        href="https://docs.jkt48connect.my.id"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-white"
+      >
+        <Zap className="h-4 w-4" />
+        <span>Docs</span>
+      </a>
+    </SidebarItem>
+  );
+};
+
 const navigationItems: SidebarItem[] = [
   {
     name: "Overview",
@@ -85,14 +102,6 @@ const navigationItems: SidebarItem[] = [
     icon: Settings2,
     type: "item",
   },
-  {
-    name: "Docs",
-    // Directly provide the anchor tag for external links
-    href: "#",
-    icon: Zap,
-    type: "item",
-    onClick: () => window.open("https://docs.jkt48connect.my.id", "_blank"),
-  },
 ];
 
 export default function Layout(props: { children: React.ReactNode }) {
@@ -124,6 +133,8 @@ export default function Layout(props: { children: React.ReactNode }) {
       ]}
     >
       {props.children}
+      {/* Add custom Docs Sidebar item here */}
+      <DocsSidebarItem />
     </SidebarLayout>
   );
 }
