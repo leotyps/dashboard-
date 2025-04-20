@@ -19,7 +19,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";  // Pastikan Anda sudah mengimpor komponen Button
+import { Button } from "@/components/ui/button";  // Pastikan Button sudah diimpor
 
 const navigationItems: SidebarItem[] = [
   {
@@ -116,15 +116,16 @@ export default function Layout(props: { children: React.ReactNode }) {
         },
       ]}
     >
-      <div className="p-4">
-        {/* Button for Documentation */}
-        <Button
-          onClick={() => window.open("https://docs.jkt48connect.my.id", "_blank")}
+      {/* Tombol Documentation ditempatkan setelah sidebar */}
+      <div className="mt-6 px-4">
+        <Button 
+          onClick={() => window.open("https://docs.jkt48connect.my.id", "_blank")} 
           className="w-full"
         >
-          Open Documentation
+          Documentation
         </Button>
       </div>
+
       {props.children}
     </SidebarLayout>
   );
