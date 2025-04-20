@@ -46,7 +46,7 @@ export default function DashboardPage() {
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
         <div className="flex flex-col gap-1 mb-4">
-          <h2 className="text-2xl font-bold tracking-tight">Fitur API JKT48</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Fitur API Downloader</h2>
           <p className="text-muted-foreground text-sm">
             Semua fitur ini memerlukan API Key pengguna. Beberapa fitur ditandai <Badge variant="destructive">Premium</Badge> yang hanya bisa diakses oleh pengguna berlangganan.
           </p>
