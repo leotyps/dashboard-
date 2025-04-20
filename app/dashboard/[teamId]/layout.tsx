@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
-// Custom Docs Sidebar link
+// Custom Docs Sidebar link as a separate component
 const DocsLink = () => (
   <a
     href="https://docs.jkt48connect.my.id"
@@ -129,7 +129,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       ]}
     >
       {props.children}
-      {/* Docs link directly outside the sidebar items */}
+      {/* Docs link as a separate component */}
       <div className="px-4 py-2">
         <DocsLink />
       </div>
