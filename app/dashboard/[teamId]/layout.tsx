@@ -1,6 +1,6 @@
 'use client';
 
-import SidebarLayout from "@/components/sidebar-layout";
+import SidebarLayout, { SidebarItem } from "@/components/sidebar-layout";
 import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
 import {
   BadgePercent,
@@ -19,21 +19,9 @@ import {
   TrendingUp
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";  // Pastikan Anda sudah mengimpor komponen Button
 
-// Custom Docs Sidebar link as a separate component
-const DocsLink = () => (
-  <a
-    href="https://docs.jkt48connect.my.id"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-white"
-  >
-    <Zap className="h-4 w-4" />
-    <span>Docs</span>
-  </a>
-);
-
-const navigationItems = [
+const navigationItems: SidebarItem[] = [
   {
     name: "Overview",
     href: "/",
@@ -128,11 +116,16 @@ export default function Layout(props: { children: React.ReactNode }) {
         },
       ]}
     >
-      {props.children}
-      {/* Docs link as a separate component */}
-      <div className="px-4 py-2">
-        <DocsLink />
+      <div className="p-4">
+        {/* Button for Documentation */}
+        <Button
+          onClick={() => window.open("https://docs.jkt48connect.my.id", "_blank")}
+          className="w-full"
+        >
+          Open Documentation
+        </Button>
       </div>
+      {props.children}
     </SidebarLayout>
   );
 }
