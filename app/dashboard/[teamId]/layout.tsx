@@ -76,46 +76,6 @@ const navigationItems: SidebarItem[] = [
     type: "item",
   },
   {
-    name: "Revenue",
-    href: "/revenue",
-    icon: BarChart4,
-    type: "item",
-  },
-  {
-    name: "Orders",
-    href: "/orders",
-    icon: ShoppingCart,
-    type: "item",
-  },
-  {
-    name: "Discounts",
-    href: "/discounts",
-    icon: BadgePercent,
-    type: "item",
-  },
-  {
-    type: "label",
-    name: "Management",
-  },
-  {
-    name: "People",
-    href: "/people",
-    icon: Users,
-    type: "item",
-  },
-  {
-    name: "Segments",
-    href: "/segments",
-    icon: Columns3,
-    type: "item",
-  },
-  {
-    name: "Regions",
-    href: "/regions",
-    icon: Locate,
-    type: "item",
-  },
-  {
     type: "label",
     name: "Settings",
   },
@@ -123,6 +83,12 @@ const navigationItems: SidebarItem[] = [
     name: "Configuration",
     href: "/configuration",
     icon: Settings2,
+    type: "item",
+  },
+  {
+    name: "Docs",
+    href: "https://docs.jkt48connect.my.id",
+    icon: Zap,
     type: "item",
   },
 ];
