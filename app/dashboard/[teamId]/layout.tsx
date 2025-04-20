@@ -5,18 +5,18 @@ import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
 import {
   BadgePercent,
   BarChart4,
-  Bot,
-  Brain,
-  CloudDownload,
+  Columns3,
   Globe,
   Locate,
-  PackageSearch,
   Settings2,
+  ShoppingBag,
   ShoppingCart,
-  Ticket,
-  UserCheck,
   Users,
   Zap,
+  MonitorDown,
+  Wallet,
+  Bot,
+  TrendingUp
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -32,92 +32,92 @@ const navigationItems: SidebarItem[] = [
     name: "Fitur",
   },
   {
-    type: "category",
     name: "JKT48",
+    href: "/jkt48",
     icon: Users,
-    children: [
-      {
-        name: "Member & Team",
-        href: "/jkt48/people",
-        type: "item",
-      },
-      {
-        name: "Theater & Events",
-        href: "/jkt48/events",
-        type: "item",
-      },
-      {
-        name: "Showroom",
-        href: "/jkt48/showroom",
-        type: "item",
-      },
-    ],
+    type: "item",
   },
   {
-    type: "category",
     name: "Downloader",
-    icon: CloudDownload,
-    children: [
-      {
-        name: "YouTube / Video",
-        href: "/downloader/video",
-        type: "item",
-      },
-      {
-        name: "Instagram / TikTok",
-        href: "/downloader/social",
-        type: "item",
-      },
-    ],
+    href: "/downloader",
+    icon: MonitorDown,
+    type: "item",
   },
   {
-    type: "category",
     name: "Payment Gateway",
-    icon: ShoppingCart,
-    children: [
-      {
-        name: "TopUp & Transaksi",
-        href: "/payment/topup",
-        type: "item",
-      },
-      {
-        name: "Orders",
-        href: "/orders",
-        type: "item",
-      },
-      {
-        name: "Revenue",
-        href: "/revenue",
-        type: "item",
-      },
-    ],
+    href: "/payment",
+    icon: Wallet,
+    type: "item",
   },
   {
-    type: "category",
     name: "AI",
+    href: "/ai",
     icon: Bot,
-    children: [
-      {
-        name: "AI Chatbot",
-        href: "/ai/chat",
-        type: "item",
-      },
-      {
-        name: "AI Tools",
-        href: "/ai/tools",
-        type: "item",
-      },
-    ],
+    type: "item",
   },
   {
     type: "label",
-    name: "Lainnya",
+    name: "Layanan",
+  },
+  {
+    name: "TopUp",
+    href: "/topup",
+    icon: TrendingUp,
+    type: "item",
+  },
+  {
+    type: "label",
+    name: "Monetization",
   },
   {
     name: "Pricing",
     href: "/pricing",
-    icon: Settings2,
+    icon: ShoppingBag,
     type: "item",
+  },
+  {
+    name: "Revenue",
+    href: "/revenue",
+    icon: BarChart4,
+    type: "item",
+  },
+  {
+    name: "Orders",
+    href: "/orders",
+    icon: ShoppingCart,
+    type: "item",
+  },
+  {
+    name: "Discounts",
+    href: "/discounts",
+    icon: BadgePercent,
+    type: "item",
+  },
+  {
+    type: "label",
+    name: "Management",
+  },
+  {
+    name: "People",
+    href: "/people",
+    icon: Users,
+    type: "item",
+  },
+  {
+    name: "Segments",
+    href: "/segments",
+    icon: Columns3,
+    type: "item",
+  },
+  {
+    name: "Regions",
+    href: "/regions",
+    icon: Locate,
+    type: "item",
+  },
+  {
+    type: "label",
+    name: "Settings",
   },
   {
     name: "Configuration",
@@ -139,19 +139,21 @@ export default function Layout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <SidebarLayout 
+    <SidebarLayout
       items={navigationItems}
       basePath={`/dashboard/${team.id}`}
       sidebarTop={
-        <SelectedTeamSwitcher 
+        <SelectedTeamSwitcher
           selectedTeam={team}
           urlMap={(team) => `/dashboard/${team.id}`}
         />
       }
-      baseBreadcrumb={[{
-        title: team.displayName,
-        href: `/dashboard/${team.id}`,
-      }]}
+      baseBreadcrumb={[
+        {
+          title: team.displayName,
+          href: `/dashboard/${team.id}`,
+        },
+      ]}
     >
       {props.children}
     </SidebarLayout>
