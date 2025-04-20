@@ -17,7 +17,6 @@ export default async function IndexPage() {
             features: [
               "Akses endpoint publik",
               "Data real-time",
-              "Tanpa autentikasi",
               "Support komunitas",
               "Free selamanya",
             ],
