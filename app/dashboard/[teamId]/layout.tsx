@@ -87,9 +87,11 @@ const navigationItems: SidebarItem[] = [
   },
   {
     name: "Docs",
+    // Use anchor <a> tag to ensure the link opens externally
     href: "https://docs.jkt48connect.my.id",
     icon: Zap,
     type: "item",
+    external: true,
   },
 ];
 
