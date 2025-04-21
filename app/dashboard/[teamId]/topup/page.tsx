@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 
 export default function TopUpPage() {
   const [amount, setAmount] = useState(0);
@@ -58,7 +57,7 @@ export default function TopUpPage() {
   };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (paymentKey && finalAmount > 0) {
       interval = setInterval(async () => {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
@@ -88,7 +87,7 @@ export default function TopUpPage() {
               type="number"
               placeholder="Masukkan nominal"
               value={amount}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(Number(e.target.value))}
             />
           </div>
           <Button onClick={handleTopUp} disabled={loading || amount <= 0}>
@@ -101,7 +100,7 @@ export default function TopUpPage() {
           )}
           {qrImage && (
             <div className="text-center">
-              <Image src={qrImage} alt="QRIS Payment" width={200} height={200} className="mx-auto rounded" />
+              <img src={qrImage} alt="QRIS Payment" className="mx-auto rounded w-52 h-52 object-contain" />
               <p className="text-xs text-muted-foreground mt-2">Scan QR dengan aplikasi e-wallet kamu</p>
             </div>
           )}
