@@ -15,14 +15,14 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
 export default function TopUpPage() {
-  const [amount, setAmount] = useState(0);
-  const [finalAmount, setFinalAmount] = useState(0);
-  const [qrImage, setQrImage] = useState("");
-  const [paymentKey, setPaymentKey] = useState("");
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState<number>(0);
+  const [finalAmount, setFinalAmount] = useState<number>(0);
+  const [qrImage, setQrImage] = useState<string>("");
+  const [paymentKey, setPaymentKey] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const calculateFee = (value) => {
+  const calculateFee = (value: number): number => {
     const fee = value * 0.015; // 1.5% fee
     return Math.ceil(value + fee);
   };
@@ -44,7 +44,7 @@ export default function TopUpPage() {
   };
 
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
     if (paymentKey && finalAmount > 0) {
       interval = setInterval(async () => {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
