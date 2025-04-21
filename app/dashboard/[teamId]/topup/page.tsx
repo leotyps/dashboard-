@@ -15,14 +15,26 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
 export default function TopUpPage() {
-  const [amount, setAmount] = useState<number>(0);
-  const [finalAmount, setFinalAmount] = useState<number>(0);
-  const [qrImage, setQrImage] = useState<string>("");
-  const [paymentKey, setPaymentKey] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [amount, setAmount] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
+  const [qrImage, setQrImage] = useState("");
+  const [paymentKey, setPaymentKey] = useState("");
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const calculateFee = (value: number): number => {
+  useEffect(() => {
+    if ("Notification" in window) {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  const showNotification = (title: string, body: string) => {
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification(title, { body });
+    }
+  };
+
+  const calculateFee = (value: number) => {
     const fee = value * 0.015; // 1.5% fee
     return Math.ceil(value + fee);
   };
@@ -37,20 +49,23 @@ export default function TopUpPage() {
       setQrImage(data.qrImageUrl);
       setPaymentKey(data.dynamicQRIS);
       setStatus("Menunggu pembayaran...");
+      showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
     } catch (err) {
       setStatus("Gagal membuat pembayaran.");
+      showNotification("Gagal", "Terjadi kesalahan saat membuat QR pembayaran.");
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval;
     if (paymentKey && finalAmount > 0) {
       interval = setInterval(async () => {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
         const result = await cek.json();
         if (result.status === "success" && result.data.length > 0) {
           setStatus("Pembayaran berhasil!");
+          showNotification("Sukses", "Pembayaran kamu telah berhasil dikonfirmasi.");
           clearInterval(interval);
         }
       }, 5000);
