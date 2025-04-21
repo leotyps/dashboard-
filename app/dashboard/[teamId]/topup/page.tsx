@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -24,9 +24,10 @@ export default function TopUpPage() {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Ambil teamId dari URL
   const params = useParams<{ teamId: string }>();
   const user = useUser({ or: "redirect" });
-  const team = user.useTeam(params?.teamId ?? "");
+  const team = user.useTeam(params.teamId);
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -65,7 +66,7 @@ export default function TopUpPage() {
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
-    if (paymentKey && finalAmount > 0 && team) {
+    if (paymentKey && finalAmount > 0 && team?.id) {
       interval = setInterval(async () => {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
         const result = await cek.json();
@@ -77,12 +78,14 @@ export default function TopUpPage() {
           clearInterval(interval);
 
           // Tambah saldo ke pengguna
-          await fetch(`https://api.jkt48connect.my.id/api/auth/add-saldo?team_id=${encodeURIComponent(team?.id ?? "")}&amount=${amount}`);
+          if (team?.id) {
+            await fetch(`https://api.jkt48connect.my.id/api/auth/add-saldo?team_id=${encodeURIComponent(team.id)}&amount=${amount}`);
+          }
         }
       }, 5000);
     }
     return () => clearInterval(interval);
-  }, [paymentKey, finalAmount, team]);
+  }, [paymentKey, finalAmount, team?.id]);
 
   return (
     <div className="flex justify-center p-8">
