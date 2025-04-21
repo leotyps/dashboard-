@@ -34,7 +34,9 @@ export default function TopUpPage() {
   };
 
   const calculateFee = (value: number) => {
-    const fee = value * 0.015; // 1.5% fee
+    // Fee akan lebih besar tergantung nominal, random antara 1.5% hingga 3.5%
+    const feePercentage = 0.015 + Math.random() * 0.02; 
+    const fee = value * feePercentage;
     return Math.ceil(value + fee);
   };
 
@@ -46,16 +48,10 @@ export default function TopUpPage() {
       const res = await fetch(`https://api.jkt48connect.my.id/api/orkut/createpayment?amount=${total}&qris=00020101021126670016COM.NOBUBANK.WWW01189360050300000879140214149391352933240303UMI51440014ID.CO.QRIS.WWW0215ID20233077025890303UMI5204541153033605802ID5919VALZSTORE%20OK14535636006SERANG61054211162070703A016304DCD2&api_key=JKTCONNECT`);
       const data = await res.json();
 
-      if (res.ok && data?.qrImageUrl && data?.dynamicQRIS) {
-        setQrImage(data.qrImageUrl);
-        setPaymentKey(data.dynamicQRIS);
-        setStatus("Menunggu pembayaran...");
-        showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
-      } else {
-        console.error("Data tidak valid", data);
-        setStatus("Menunggu pembayaran...");
-        showNotification("QR Pembayaran Siap", "QR sudah dibuat, tapi data tidak lengkap.");
-      }
+      setQrImage(data.qrImageUrl);
+      setPaymentKey(data.dynamicQRIS);
+      setStatus("Menunggu pembayaran...");
+      showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
     } catch (err) {
       console.error("Network error:", err);
       setStatus("Menunggu pembayaran...");
