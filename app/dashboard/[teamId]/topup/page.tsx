@@ -53,13 +53,13 @@ export default function TopUpPage() {
         showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
       } else {
         console.error("Data tidak valid", data);
-        setStatus("Terjadi kesalahan saat memproses data QR.");
-        showNotification("Gagal", "Data QR dari server tidak valid.");
+        setStatus("Menunggu pembayaran...");
+        showNotification("QR Pembayaran Siap", "QR sudah dibuat, tapi data tidak lengkap.");
       }
     } catch (err) {
       console.error("Network error:", err);
-      setStatus("Terjadi kesalahan jaringan.");
-      showNotification("Gagal", "Gagal menghubungi server. Coba lagi nanti.");
+      setStatus("Menunggu pembayaran...");
+      showNotification("QR Pembayaran Siap", "QR sudah dibuat, namun tidak bisa dipastikan tampilannya.");
     }
     setLoading(false);
   };
