@@ -26,7 +26,7 @@ export default function TopUpPage() {
 
   const params = useParams<{ teamId: string }>();
   const user = useUser({ or: "redirect" });
-  const team = user.useTeam(params.teamId);
+  const team = user.useTeam(params?.teamId ?? "");
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -76,12 +76,13 @@ export default function TopUpPage() {
           showNotification("Sukses", "Pembayaran kamu telah berhasil dikonfirmasi.");
           clearInterval(interval);
 
-          await fetch(`https://api.jkt48connect.my.id/api/auth/add-saldo?team_id=${team.id}&amount=${amount}`);
+          // Tambah saldo ke pengguna
+          await fetch(`https://api.jkt48connect.my.id/api/auth/add-saldo?team_id=${encodeURIComponent(team?.id ?? "")}&amount=${amount}`);
         }
       }, 5000);
     }
     return () => clearInterval(interval);
-  }, [paymentKey, finalAmount, team, amount]);
+  }, [paymentKey, finalAmount, team]);
 
   return (
     <div className="flex justify-center p-8">
