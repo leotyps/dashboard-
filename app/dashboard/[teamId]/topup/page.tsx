@@ -34,8 +34,7 @@ export default function TopUpPage() {
   };
 
   const calculateFee = (value: number) => {
-    // Fee akan lebih besar tergantung nominal, random antara 1.5% hingga 3.5%
-    const feePercentage = 0.015 + Math.random() * 0.02; 
+    const feePercentage = 0.015 + Math.random() * 0.02;
     const fee = value * feePercentage;
     return Math.ceil(value + fee);
   };
@@ -67,7 +66,8 @@ export default function TopUpPage() {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
         const result = await cek.json();
         if (result.status === "success" && result.data.length > 0) {
-          setStatus("Pembayaran berhasil!");
+          setStatus("Saldo berhasil ditambahkan!");
+          setQrImage("");
           showNotification("Sukses", "Pembayaran kamu telah berhasil dikonfirmasi.");
           clearInterval(interval);
         }
@@ -102,7 +102,7 @@ export default function TopUpPage() {
               Total yang dibayar (termasuk fee): <strong>Rp {finalAmount}</strong>
             </p>
           )}
-          {qrImage && (
+          {qrImage && status !== "Saldo berhasil ditambahkan!" && (
             <div className="text-center">
               <img src={qrImage} alt="QRIS Payment" className="mx-auto rounded w-52 h-52 object-contain" />
               <p className="text-xs text-muted-foreground mt-2">Scan QR dengan aplikasi e-wallet kamu</p>
