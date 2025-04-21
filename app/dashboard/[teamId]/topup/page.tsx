@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useUser } from "@stackframe/stack";
 import {
   Card,
   CardContent,
@@ -20,6 +22,11 @@ export default function TopUpPage() {
   const [paymentKey, setPaymentKey] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const params = useParams<{ teamId: string }>();
+  const user = useUser({ or: "redirect" });
+  const team = user.useTeam(params.teamId);
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -33,28 +40,25 @@ export default function TopUpPage() {
     }
   };
 
-  const calculateFee = (value: number) => {
-    const feePercentage = 0.015 + Math.random() * 0.02;
-    const fee = value * feePercentage;
+  const generateFee = (value: number) => {
+    const randomPercent = Math.random() * (3.5 - 1.5) + 1.5;
+    const fee = value * (randomPercent / 100);
     return Math.ceil(value + fee);
   };
 
   const handleTopUp = async () => {
-    const total = calculateFee(amount);
+    const total = generateFee(amount);
     setFinalAmount(total);
     setLoading(true);
     try {
       const res = await fetch(`https://api.jkt48connect.my.id/api/orkut/createpayment?amount=${total}&qris=00020101021126670016COM.NOBUBANK.WWW01189360050300000879140214149391352933240303UMI51440014ID.CO.QRIS.WWW0215ID20233077025890303UMI5204541153033605802ID5919VALZSTORE%20OK14535636006SERANG61054211162070703A016304DCD2&api_key=JKTCONNECT`);
       const data = await res.json();
-
       setQrImage(data.qrImageUrl);
       setPaymentKey(data.dynamicQRIS);
       setStatus("Menunggu pembayaran...");
       showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
     } catch (err) {
-      console.error("Network error:", err);
-      setStatus("Menunggu pembayaran...");
-      showNotification("QR Pembayaran Siap", "QR sudah dibuat, namun tidak bisa dipastikan tampilannya.");
+      setStatus("");
     }
     setLoading(false);
   };
@@ -66,10 +70,14 @@ export default function TopUpPage() {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
         const result = await cek.json();
         if (result.status === "success" && result.data.length > 0) {
-          setStatus("Saldo berhasil ditambahkan!");
+          setStatus("Pembayaran berhasil!");
           setQrImage("");
+          setSuccessMessage("Saldo berhasil ditambahkan!");
           showNotification("Sukses", "Pembayaran kamu telah berhasil dikonfirmasi.");
           clearInterval(interval);
+
+          // Tambah saldo ke pengguna
+          await fetch(`https://api.jkt48connect.my.id/api/auth/add-saldo?team_id=${team.id}&amount=${amount}`);
         }
       }, 5000);
     }
@@ -102,13 +110,14 @@ export default function TopUpPage() {
               Total yang dibayar (termasuk fee): <strong>Rp {finalAmount}</strong>
             </p>
           )}
-          {qrImage && status !== "Saldo berhasil ditambahkan!" && (
+          {qrImage && (
             <div className="text-center">
               <img src={qrImage} alt="QRIS Payment" className="mx-auto rounded w-52 h-52 object-contain" />
               <p className="text-xs text-muted-foreground mt-2">Scan QR dengan aplikasi e-wallet kamu</p>
             </div>
           )}
-          {status && <Badge>{status}</Badge>}
+          {successMessage && <p className="text-green-600 font-semibold text-center">{successMessage}</p>}
+          {status && !successMessage && <Badge>{status}</Badge>}
         </CardContent>
       </Card>
     </div>
