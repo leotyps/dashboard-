@@ -58,7 +58,7 @@ export default function TopUpPage() {
   };
 
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
     if (paymentKey && finalAmount > 0) {
       interval = setInterval(async () => {
         const cek = await fetch(`https://api.jkt48connect.my.id/api/orkut/cekstatus?merchant=OK1453563&keyorkut=584312217038625421453563OKCT6AF928C85E124621785168CD18A9B693&amount=${finalAmount}&api_key=JKTCONNECT`);
@@ -88,7 +88,7 @@ export default function TopUpPage() {
               type="number"
               placeholder="Masukkan nominal"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value))}
             />
           </div>
           <Button onClick={handleTopUp} disabled={loading || amount <= 0}>
