@@ -39,28 +39,30 @@ export default function TopUpPage() {
   };
 
   const handleTopUp = async () => {
-  const total = calculateFee(amount);
-  setFinalAmount(total);
-  setLoading(true);
-  try {
-    const res = await fetch(`https://api.jkt48connect.my.id/api/orkut/createpayment?amount=${total}&qris=00020101021126670016COM.NOBUBANK.WWW01189360050300000879140214149391352933240303UMI51440014ID.CO.QRIS.WWW0215ID20233077025890303UMI5204541153033605802ID5919VALZSTORE%20OK14535636006SERANG61054211162070703A016304DCD2&api_key=JKTCONNECT`);
-    const data = await res.json();
+    const total = calculateFee(amount);
+    setFinalAmount(total);
+    setLoading(true);
+    try {
+      const res = await fetch(`https://api.jkt48connect.my.id/api/orkut/createpayment?amount=${total}&qris=00020101021126670016COM.NOBUBANK.WWW01189360050300000879140214149391352933240303UMI51440014ID.CO.QRIS.WWW0215ID20233077025890303UMI5204541153033605802ID5919VALZSTORE%20OK14535636006SERANG61054211162070703A016304DCD2&api_key=JKTCONNECT`);
+      const data = await res.json();
 
-    if (data?.qrImageUrl && data?.dynamicQRIS) {
-      setQrImage(data.qrImageUrl);
-      setPaymentKey(data.dynamicQRIS);
-      setStatus("Menunggu pembayaran...");
-      showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
-    } else {
-      setStatus("Terjadi kesalahan: data QR tidak valid.");
-      showNotification("Gagal", "Gagal memproses data QR dari server.");
+      if (res.ok && data?.qrImageUrl && data?.dynamicQRIS) {
+        setQrImage(data.qrImageUrl);
+        setPaymentKey(data.dynamicQRIS);
+        setStatus("Menunggu pembayaran...");
+        showNotification("QR Pembayaran Siap", "Silakan scan QR untuk menyelesaikan pembayaran.");
+      } else {
+        console.error("Data tidak valid", data);
+        setStatus("Terjadi kesalahan saat memproses data QR.");
+        showNotification("Gagal", "Data QR dari server tidak valid.");
+      }
+    } catch (err) {
+      console.error("Network error:", err);
+      setStatus("Terjadi kesalahan jaringan.");
+      showNotification("Gagal", "Gagal menghubungi server. Coba lagi nanti.");
     }
-  } catch (err) {
-    setStatus("Terjadi kesalahan jaringan.");
-    showNotification("Gagal", "Terjadi kesalahan saat menghubungi server.");
-  }
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
