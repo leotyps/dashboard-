@@ -50,7 +50,7 @@ export function CardConnectAccount() {
     if (!team) return
     setLoading(true)
     const key = generateKey()
-    const whatsappUrl = `https://wa.me/447818592493?text=${encodeURIComponent(`.connect ${team.id}|${key}`)}`
+    const whatsappUrl = `https://wa.me/6285198360849?text=${encodeURIComponent(`.connect ${team.id}|${key}`)}`
     window.location.href = whatsappUrl
   }
 
