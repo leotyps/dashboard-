@@ -78,7 +78,7 @@ const jkt48Features = [
   {
     title: "Youtube Live Only",
     description: "Ambil data member JKT48V yang sedang live pada youtube.",
-    endpoint: "https://api.jkt48connect.my.id/api/live/ytlive?api_key=XXXX",
+    endpoint: "https://api.jkt48connect.my.id/api/ytlive?api_key=XXXX",
     premium: true,
   },
   {
